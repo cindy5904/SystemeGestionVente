@@ -4,6 +4,7 @@ import org.example.entity.Article;
 import org.example.entity.Client;
 import org.example.entity.Vente;
 import org.example.interfaces.Repository;
+import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import java.util.List;
@@ -65,6 +66,8 @@ public class VenteService extends BaseService implements Repository<Vente> {
     }
 
     public double TotalPrixRecu(Vente vente) {
+        Session session = sessionFactory.openSession();
+        Query<Double> VenteQuery = session.createQuery()
 
     }
 
