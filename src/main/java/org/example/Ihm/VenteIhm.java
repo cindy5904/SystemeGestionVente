@@ -158,7 +158,7 @@ public class VenteIhm {
 
 
         System.out.println("Détails de la vente : ");
-        System.out.println("ID de la vente : " + vente.getId());
+        System.out.println("Reference de la vente(id) : " + vente.getId());
         System.out.println("Client : " + vente.getClient().getNom());
         System.out.println("État de la vente : " + vente.getEtatVente());
         System.out.println("Article : ");
@@ -175,4 +175,4 @@ public class VenteIhm {
 
 
     }
-}
+

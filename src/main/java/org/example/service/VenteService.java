@@ -65,11 +65,7 @@ public class VenteService extends BaseService implements Repository<Vente> {
     }
 
     public double TotalPrixRecu(Vente vente) {
-        double somme = 0.0;
-        for (Article article : vente.getArticles()) {
-            somme += article.getPrix();
-        }
-        return somme;
+
     }
 
     public List<Article> detailsArticlesVente(Vente vente) {
