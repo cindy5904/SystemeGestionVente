@@ -20,6 +20,7 @@ Cette application a été développé en utilisant Java hibernate et SQL Workben
 
 - Ajouter, modifier, supprimer et consulter les infos des clients.
 - La recherche d'un client par son Id est également disponible.
+- Historique d'achat
 
 #### 4. Rapport et Statistiques :
 
