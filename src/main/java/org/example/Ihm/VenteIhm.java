@@ -46,9 +46,8 @@ public class VenteIhm {
         venteService.close();
     }
     private void menu(){
-        System.out.println("#######  Menu  ######");
+        System.out.println("#######  Menu Vente ######");
         System.out.println("1. Ajouter une vente");
-        System.out.println("2. Modifier une vente");
         System.out.println("3. Suivre l'état d'une vente");
         System.out.println("4. Consulter les ventes");
         System.out.println("5. Générer le reçu");
@@ -57,7 +56,7 @@ public class VenteIhm {
     }
 
     public void ajouterVente() {
-        System.out.println("*****Créer un article*****");
+        System.out.println("*****Créer une vente*****");
         System.out.print("Numero Client fidélité : ");
         int choixClient = scanner.nextInt();
         scanner.nextLine();
@@ -106,6 +105,7 @@ public class VenteIhm {
 
         boolean succes = venteService.create(vente);
         if(succes) {
+            venteService.updateStockArticles(vente);
             System.out.println("Vente crée avec succès");
         } else {
             System.out.println("Erreur lors de la création de l'article");
@@ -162,14 +162,15 @@ public class VenteIhm {
         System.out.println("Client : " + vente.getClient().getNom());
         System.out.println("État de la vente : " + vente.getEtatVente());
         System.out.println("Article : ");
-        List<Article> articles = venteService.detailsArticlesVente(vente);
+        List<Article> articles = vente.getArticles();
+        int nombreArticles = articles.size();
         for (Article article : articles) {
             System.out.println("Description : " + article.getDescription());
-            System.out.println("Quantité : " + article.getQuantiteEnStock());
             System.out.println("Prix unitaire : " + article.getPrix());
             System.out.println("-----------------------------------------");
         }
-        System.out.println("Somme totale : " + somme);
+        System.out.println("Nombre total d'articles : " + nombreArticles);
+        System.out.println("Montant : " + somme);
         }
 
 

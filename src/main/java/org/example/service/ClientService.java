@@ -1,7 +1,9 @@
 package org.example.service;
 
 import org.example.entity.Client;
+import org.example.entity.Vente;
 import org.example.interfaces.Repository;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -53,6 +55,16 @@ public class ClientService extends BaseService implements Repository<Client> {
         List<Client> clients = session.createQuery("from Client ", Client.class).list();
         session.close();
         return clients;
+    }
+
+    public List<Vente> getHistoriqueAchat(int clientId) {
+        session = sessionFactory.openSession();
+        String hql = "from Vente v where v.client.id = :clientId";
+        Query<Vente> query = session.createQuery(hql, Vente.class);
+        query.setParameter("clientId", clientId);
+        List<Vente> historiqueAchat = query.list();
+        session.close();
+        return historiqueAchat;
     }
 
     public void close(){

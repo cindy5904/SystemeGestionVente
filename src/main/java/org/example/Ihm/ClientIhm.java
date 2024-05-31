@@ -3,19 +3,23 @@ package org.example.Ihm;
 import org.example.Util.Categorie;
 import org.example.entity.Article;
 import org.example.entity.Client;
+import org.example.entity.Vente;
 import org.example.service.ArticleService;
 import org.example.service.ClientService;
+import org.example.service.VenteService;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class ClientIhm {
     ClientService clientService;
+    VenteService venteService;
     Scanner scanner;
 
     public ClientIhm() {
         scanner = new Scanner(System.in);
         clientService = new ClientService();
+        venteService = new VenteService();
     }
 
     public void start(){
@@ -29,6 +33,7 @@ public class ClientIhm {
                 case "3" -> supprimerClient();
                 case "4" ->afficherTousLesClients();
                 case "5" ->afficherUnClient();
+                case "6" ->consulterHistoriqueAchat();
                 case "0" -> System.out.println("Quitter");
                 default -> System.out.println("choix invalide");
             }
@@ -37,12 +42,13 @@ public class ClientIhm {
         clientService.close();
     }
     private void menu(){
-        System.out.println("#######  Menu  ######");
+        System.out.println("#######  Menu Client ######");
         System.out.println("1. Créer un client");
         System.out.println("2. Modifier un client");
         System.out.println("3. Supprimer un client");
         System.out.println("4. Afficher tous les clients");
         System.out.println("5. Afficher un client");
+        System.out.println("6. Consulter l'historique d'achat d'un client");
         System.out.println("0. Quitter");
         System.out.println("Votre choix :");
     }
@@ -82,10 +88,10 @@ public class ClientIhm {
        System.out.println("Entrer le nouveau nom : ");
        String nouveauNom = scanner.nextLine();
        clientAModifier.setNom(nouveauNom);
-       scanner.nextLine();
+
+       System.out.println("Entrer le nouvel email : ");
        String nouvelEmail = scanner.nextLine();
        clientAModifier.setEmail(nouvelEmail);
-       scanner.nextLine();
 
        boolean succes = clientService.update(clientAModifier);
        if (succes) {
@@ -140,5 +146,33 @@ public class ClientIhm {
            System.out.println(client);
        }
    }
+
+    public void consulterHistoriqueAchat() {
+        System.out.println("***** Consulter l'historique d'achat du client *****");
+        System.out.println("Numéro du client(id) : ");
+        int clientId = scanner.nextInt();
+        scanner.nextLine();
+        List<Vente> historiqueAchat = clientService.getHistoriqueAchat(clientId);
+        if (historiqueAchat == null) {
+            System.out.println("Aucun historique d'achat trouvé pour ce client.");
+            return;
+        }
+        for (Vente vente : historiqueAchat) {
+            System.out.println("Référence de la vente(id) : " + vente.getId());
+            System.out.println("État de la vente : " + vente.getEtatVente());
+            System.out.println("Articles : ");
+            List<Article> articles = vente.getArticles();
+            int nombreArticles = articles.size();
+            for (Article article : articles) {
+                System.out.println("Description : " + article.getDescription());
+                System.out.println("Quantité : " + article.getQuantiteEnStock());
+                System.out.println("Prix unitaire : " + article.getPrix());
+                System.out.println("-----------------------------------------");
+            }
+            System.out.println("Vous avez " + nombreArticles + " articles dans votre reçu");
+            System.out.println("Montant total : " + venteService.TotalPrixRecu(vente));
+            System.out.println("=========================================");
+        }
+    }
 
 }

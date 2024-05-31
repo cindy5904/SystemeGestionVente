@@ -17,14 +17,12 @@ public class Vente {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private EtatVente etatVente;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "vente_article", joinColumns = @JoinColumn(name = "vente_id"), inverseJoinColumns = @JoinColumn(name = "article_id"))
     private List<Article> articles = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
-
-    private String recu;
 
     public Vente() {
 
@@ -37,7 +35,6 @@ public class Vente {
                 ", etatVente=" + etatVente +
                 ", articles=" + articles +
                 ", client=" + client +
-                ", recu='" + recu + '\'' +
                 '}';
     }
 }

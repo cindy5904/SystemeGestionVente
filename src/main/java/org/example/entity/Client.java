@@ -16,7 +16,7 @@ public class Client {
     private int id;
     private String nom;
     private String email;
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private List<Vente> historiqueAchat;
 
     public Client() {

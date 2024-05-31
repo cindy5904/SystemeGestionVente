@@ -34,7 +34,7 @@ public class ArticleIhm {
         articleService.close();
     }
     private void menu(){
-        System.out.println("#######  Menu  ######");
+        System.out.println("#######  Menu Article  #######");
         System.out.println("1. Ajouter un article");
         System.out.println("2. Modifier un article");
         System.out.println("3. Supprimer un article");

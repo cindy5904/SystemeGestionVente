@@ -10,7 +10,11 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class VenteService extends BaseService implements Repository<Vente> {
+    ArticleService articleService;
 
+    public VenteService() {
+        articleService = new ArticleService();
+    }
 
     @Override
     public boolean create(Vente o) {
@@ -60,23 +64,28 @@ public class VenteService extends BaseService implements Repository<Vente> {
 
     public Vente genereRecu() {
         session = sessionFactory.openSession();
-        Vente vente = session.createQuery("SELECT DISTINCT v FROM Vente v LEFT JOIN FETCH v.client LEFT JOIN FETCH v.articles", Vente.class).getSingleResult();
+        Vente vente = session.createQuery
+                ("SELECT DISTINCT v FROM Vente v LEFT JOIN FETCH v.client LEFT JOIN FETCH v.articles", Vente.class).getSingleResult();
         session.close();
         return vente;
     }
 
     public double TotalPrixRecu(Vente vente) {
         Session session = sessionFactory.openSession();
-        Query<Double> VenteQuery = session.createQuery()
+        Query<Double> venteQuery = session.createQuery
+                ( "select sum(a.prix) from Vente v join v.articles a where v.id = :venteId", Double.class);
+        venteQuery.setParameter("venteId", vente.getId());
+        double sommeArticle = venteQuery.uniqueResult();
+        session.close();
+        return sommeArticle;
 
     }
-
-    public List<Article> detailsArticlesVente(Vente vente) {
-        return vente.getArticles();
+    public void updateStockArticles(Vente vente) {
+        for (Article article : vente.getArticles()) {
+            article.setQuantiteEnStock(article.getQuantiteEnStock() - 1);
+            articleService.update(article);
+        }
     }
-
-
-
 
     public void close(){
         sessionFactory.close();
